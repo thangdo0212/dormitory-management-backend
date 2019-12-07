@@ -1,22 +1,21 @@
-package com.dormiroty.api.model.dto;
+package com.dormiroty.api.model.request;
 
 import com.dormiroty.api.model.entity.Student;
-
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class DepartmentDTO {
+public class DepartmentRequest {
 
     private ObjectId id;
 
     private String departmentName;
 
-    private Integer maxPeoples;
+    private Integer maxPeople;
 
     private Integer currentPeoples;
 

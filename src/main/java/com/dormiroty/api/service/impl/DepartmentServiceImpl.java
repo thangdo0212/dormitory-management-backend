@@ -3,57 +3,47 @@ package com.dormiroty.api.service.impl;
 import com.dormiroty.api.model.dto.DepartmentDTO;
 import com.dormiroty.api.model.entity.Department;
 import com.dormiroty.api.model.mapper.DepartmentMapper;
-import com.dormiroty.api.model.request.DeparmentRequest;
+import com.dormiroty.api.model.request.DepartmentRequest;
 import com.dormiroty.api.repository.DepartmentRepository;
-import com.dormiroty.api.repository.StudentRepository;
 import com.dormiroty.api.service.DepartmentService;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-  @Autowired
-  private DepartmentRepository departmentRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
-  @Autowired
-  private StudentRepository studentRepository;
-
-  @Override
-  public List<DepartmentDTO> findAll() {
-    List<Department> departments = departmentRepository.findAll();
-    return DepartmentMapper.INSTANCE.toDepartmentDTOS(departments);
-  }
-
-  @Override
-  public List<DepartmentDTO> findAllNullDepartment() {
-    return DepartmentMapper.INSTANCE.toDepartmentDTOS(departmentRepository.findAllByNullBedIsLessThanEqual(8));
-  }
-
-  @Override
-  public DepartmentDTO createDepartment(DeparmentRequest deparmentRequest) {
-    Department department = new Department();
-    department.setName(deparmentRequest.getName());
-    department.setTotalBed(8);
-    department.setNullBed(8);
-    department.setStudents(new ArrayList<>());
-    departmentRepository.save(department);
-    return DepartmentMapper.INSTANCE.toDepartmentDTO(department);
-  }
-
-  @Override
-  public DepartmentDTO updateDepartment(DeparmentRequest deparmentRequest) {
-    Department department = departmentRepository.findById(deparmentRequest.getObjectId()).get();
-    if(deparmentRequest.getStudents().size() <= 8) {
-      department.setStudents(deparmentRequest.getStudents());
-    } else {
-      throw new IllegalArgumentException("Phòng chỉ cho 8 người ở");
+    @Override
+    public DepartmentDTO createDepartment(DepartmentRequest departmentRequest) {
+        Department department = new Department();
+        department.setDepartmentName(departmentRequest.getDepartmentName());
+        department.setMaxPeoples(8); // default 8 peoples per one department
+        department.setCurrentPeoples(0); // the first of create department current peoples is zero
+        department.setStudents(new ArrayList<>());
+        departmentRepository.save(department);
+        return DepartmentMapper.INSTANCE.toDepartmentDTO(department);
     }
-    department.setNullBed(department.getStudents().size());
-    departmentRepository.save(department);
-    studentRepository.saveAll(deparmentRequest.getStudents());
-    return DepartmentMapper.INSTANCE.toDepartmentDTO(department);
-  }
+
+    @Override
+    public List<DepartmentDTO> getAllDepartment(Boolean isNullDepartment) {
+        List<Department> departmentList = null;
+        if(isNullDepartment) {
+            departmentList = departmentRepository.findAllByCurrentPeoplesLessThan(8);
+        } else {
+            departmentList = departmentRepository.findAll();
+        }
+        return DepartmentMapper.INSTANCE.toDepartmentDTOS(departmentList);
+    }
+
+    @Override
+    public DepartmentDTO searchDepartmentByName(String departmentName) {
+        Department department = departmentRepository.findByDepartmentName(departmentName);
+        return DepartmentMapper.INSTANCE.toDepartmentDTO(department);
+    }
 }

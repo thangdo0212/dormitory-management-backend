@@ -1,6 +1,7 @@
 package com.dormiroty.api.model.entity;
 
 import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -13,21 +14,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "student")
 public class Student implements Serializable {
 
-  @Id
-  private ObjectId id;
+    @Id
+    private ObjectId id;
 
-  @Field(value = "msv")
-  private String msv;
+    @Field(value = "studentCode")
+    private String studentCode;
 
-  @Field(value = "name")
-  private String name;
+    @Field(value = "studentName")
+    private String studentName;
 
-  @Field(value = "faculity")
-  private String faculity;
+    @Field(value = "faculty")
+    private String faculty;
 
-  @Field(value = "created_date")
-  private String createDate;
+    @Field(value = "createdDate")
+    private String createdDate;
 
-  @Field(value = "department_name")
-  private String departmentName;
+    @Field(value = "departmentId")
+    private ObjectId departmentId;
+
+    @Field(value = "departmentName")
+    private String departmentName;
 }
