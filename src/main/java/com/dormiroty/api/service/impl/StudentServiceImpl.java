@@ -72,6 +72,7 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteByStudentCode(studentCode);
     }
 
+
     /**
      * move department
      */
@@ -96,6 +97,7 @@ public class StudentServiceImpl implements StudentService {
         // update information of new department of student
         Department newDepartment = departmentRepository.findById(studentRequest.getDepartmentId()).get();
         List<Student> currentStudents = newDepartment.getStudents();
+
         if (department.getCurrentPeoples() < 8) {
             currentStudents.add(student);
             department.setStudents(currentStudents);
