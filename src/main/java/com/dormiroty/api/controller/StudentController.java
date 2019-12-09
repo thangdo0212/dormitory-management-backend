@@ -38,7 +38,7 @@ public class StudentController {
     public ResponseEntity<RestResult<StudentDTO>> updateStudent(@RequestBody StudentRequest request) {
         RestResult<StudentDTO> restResult = new RestResult<>();
         restResult.setData(studentService.updateStudent(request));
-        restResult.setMessage("Create student success");
+        restResult.setMessage("Update student success");
         return new ResponseEntity<>(restResult, HttpStatus.OK);
     }
 

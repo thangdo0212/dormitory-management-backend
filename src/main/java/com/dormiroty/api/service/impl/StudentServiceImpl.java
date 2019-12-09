@@ -83,30 +83,31 @@ public class StudentServiceImpl implements StudentService {
         Department department = departmentRepository.findById(student.getDepartmentId()).get();
         List<Student> studentOfDepartment = department.getStudents();
         for (Student s : studentOfDepartment) {
-            if (s.getDepartmentId().equals(student.getDepartmentId())) {
+            if (s.getStudentCode().equals(student.getStudentCode())) {
                 studentOfDepartment.remove(s);
+                department.setStudents(studentOfDepartment);
+                department.setCurrentPeoples(studentOfDepartment.size());
+                departmentRepository.save(department);
+                break;
             }
-            department.setStudents(studentOfDepartment);
-            department.setCurrentPeoples(studentOfDepartment.size());
-            departmentRepository.save(department);
-            break;
         }
         student.setDepartmentName(studentRequest.getDepartmentName());
         student.setDepartmentId(studentRequest.getDepartmentId());
-        studentRepository.save(student);
-        // update information of new department of student
         Department newDepartment = departmentRepository.findById(studentRequest.getDepartmentId()).get();
         List<Student> currentStudents = newDepartment.getStudents();
 
-        if (department.getCurrentPeoples() < 8) {
+        if (newDepartment.getCurrentPeoples() < 8) {
             currentStudents.add(student);
-            department.setStudents(currentStudents);
-            department.setCurrentPeoples(currentStudents.size());
-            departmentRepository.save(department);
+            newDepartment.setStudents(currentStudents);
+            newDepartment.setCurrentPeoples(currentStudents.size());
+            departmentRepository.save(newDepartment);
         } else {
             throw new IllegalArgumentException("Department is full");
         }
-        return null;
+        studentRepository.save(student);
+        // update information of new department of student
+
+        return StudentMapper.INSTANCE.toStudentDTO(student);
     }
 
     @Override
