@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +25,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO createStudent(StudentRequest studentRequest) {
+        Department department = departmentRepository.findById(studentRequest.getDepartmentId()).get();
+
+        if(department == null) {
+            throw new IllegalArgumentException("Department not found");
+        }
+
         Student student = new Student();
         student.setStudentCode(studentRequest.getStudentCode());
         student.setStudentName(studentRequest.getStudentName());
@@ -36,7 +41,6 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
 
         // add student to department
-        Department department = departmentRepository.findById(studentRequest.getDepartmentId()).get();
         List<Student> currentStudents = department.getStudents();
         if (department.getCurrentPeoples() < 8) {
             currentStudents.add(student);
@@ -57,6 +61,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(String studentCode) {
         Student student = studentRepository.findByStudentCode(studentCode);
+        if(student == null) {
+            throw new IllegalArgumentException("student not exist");
+        }
         // remove student at old department
         Department department = departmentRepository.findById(student.getDepartmentId()).get();
         List<Student> studentOfDepartment = department.getStudents();
@@ -79,6 +86,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO updateStudent(StudentRequest studentRequest) {
         Student student = studentRepository.findByStudentCode(studentRequest.getStudentCode());
+        if(student == null) {
+            throw new IllegalArgumentException("student not exist");
+        }
         // remove student at old department
         Department department = departmentRepository.findById(student.getDepartmentId()).get();
         List<Student> studentOfDepartment = department.getStudents();
