@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 public class StudentRequest {
 
-    private ObjectId id;
+    private String id;
 
     private String studentCode;
 
@@ -20,7 +20,7 @@ public class StudentRequest {
 
     private String createDate;
 
-    private ObjectId departmentId;
+    private String departmentId;
 
     private String departmentName;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class DepartmentRequest {
 
-    private ObjectId id;
+    private String id;
 
     private String departmentName;
 

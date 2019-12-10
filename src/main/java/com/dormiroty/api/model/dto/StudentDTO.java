@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 @Setter
 public class StudentDTO {
 
-    private ObjectId id;
+    private String id;
 
     private String studentCode;
 
@@ -18,7 +18,7 @@ public class StudentDTO {
 
     private String createdDate;
 
-    private ObjectId departmentId;
+    private String departmentId;
 
     private String departmentName;
 }

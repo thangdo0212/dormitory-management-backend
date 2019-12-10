@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Student implements Serializable {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     @Field(value = "studentCode")
     private String studentCode;
@@ -30,7 +30,7 @@ public class Student implements Serializable {
     private String createdDate;
 
     @Field(value = "departmentId")
-    private ObjectId departmentId;
+    private String departmentId;
 
     @Field(value = "departmentName")
     private String departmentName;

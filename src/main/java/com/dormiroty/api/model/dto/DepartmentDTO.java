@@ -12,7 +12,7 @@ import org.bson.types.ObjectId;
 @Setter
 public class DepartmentDTO {
 
-    private ObjectId id;
+    private String id;
 
     private String departmentName;
 

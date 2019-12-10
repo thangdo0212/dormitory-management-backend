@@ -31,6 +31,9 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Department not found");
         }
 
+        if(department.getCurrentPeoples() == 8) {
+            throw new IllegalArgumentException("Department is full");
+        }
         Student student = new Student();
         student.setStudentCode(studentRequest.getStudentCode());
         student.setStudentName(studentRequest.getStudentName());
