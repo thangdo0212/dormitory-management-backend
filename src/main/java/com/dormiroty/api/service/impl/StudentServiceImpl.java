@@ -8,6 +8,7 @@ import com.dormiroty.api.model.request.StudentRequest;
 import com.dormiroty.api.repository.DepartmentRepository;
 import com.dormiroty.api.repository.StudentRepository;
 import com.dormiroty.api.service.StudentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,12 @@ public class StudentServiceImpl implements StudentService {
 
         if(department.getCurrentPeoples() == 8) {
             throw new IllegalArgumentException("Department is full");
+        }
+        if(studentRequest.getStudentCode() == null || StringUtils.isNotBlank(studentRequest.getStudentCode())) {
+            throw new IllegalArgumentException("Mã sinh viên thiếu");
+        }
+        if(studentRequest.getDepartmentId() == null) {
+            throw  new IllegalArgumentException("Phòng thiếu");
         }
         Student student = new Student();
         student.setStudentCode(studentRequest.getStudentCode());
